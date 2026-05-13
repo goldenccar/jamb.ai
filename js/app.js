@@ -6,7 +6,7 @@
 import { DAL } from './core/dal.js';
 import MeiHuaYiShu from './modules/meihua.js';
 import LiuYao from './modules/liuyao.js';
-import { getYaoHTML } from './core/utils.js';
+import { getYaoHTML, numToChinese } from './core/utils.js';
 
 // ============================================
 // 页面导航
@@ -220,8 +220,8 @@ function renderLiuYaoResult(result) {
 
     const infoHtml = `
         <div class="ly-info-item"><span class="ly-info-label">卦宫</span><span class="ly-info-value">${zhuang.gong}宫 (${zhuang.gongWuxing})</span></div>
-        <div class="ly-info-item"><span class="ly-info-label">世爻</span><span class="ly-info-value">${LiuYao.numToChinese(zhuang.shi)}爻</span></div>
-        <div class="ly-info-item"><span class="ly-info-label">应爻</span><span class="ly-info-value">${LiuYao.numToChinese(zhuang.ying)}爻</span></div>
+        <div class="ly-info-item"><span class="ly-info-label">世爻</span><span class="ly-info-value">${numToChinese(zhuang.shi)}爻</span></div>
+        <div class="ly-info-item"><span class="ly-info-label">应爻</span><span class="ly-info-value">${numToChinese(zhuang.ying)}爻</span></div>
     `;
     document.getElementById('ly-info-list').innerHTML = infoHtml;
 
