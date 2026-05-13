@@ -95,7 +95,7 @@ function renderMeiHuaResult(result) {
     document.getElementById('mh-duan-baihua').innerHTML = `
         <div class="duan-title">白话释义 · 体用分析</div>
         <div class="duan-text">${mhDuan.baihua}<br><br>${mhDuan.shengKe}</div>
-        ${mhDaBaihua ? `<div class="duan-subtitle">💡 大白话</div><div class="duan-text duan-dabaihua">${mhDaBaihua}</div>` : ''}
+        ${mhDaBaihua ? `<div class="duan-title">大白话</div><div class="duan-text duan-dabaihua">${mhDaBaihua}</div>` : ''}
     `;
 }
 
@@ -244,7 +244,7 @@ function renderLiuYaoResult(result) {
     document.getElementById('ly-duan-baihua').innerHTML = `
         <div class="duan-title">白话释义 · 卦象分析</div>
         <div class="duan-text">${lyDuan.baihua}<br><br>世爻在${lyDuan.shi}，应爻在${lyDuan.ying}。卦宫${lyDuan.gong}。共${lyDuan.dongCount}个动爻。</div>
-        ${lyDaBaihua ? `<div class="duan-subtitle">💡 大白话</div><div class="duan-text duan-dabaihua">${lyDaBaihua}</div>` : ''}
+        ${lyDaBaihua ? `<div class="duan-title">大白话</div><div class="duan-text duan-dabaihua">${lyDaBaihua}</div>` : ''}
     `;
 }
 
