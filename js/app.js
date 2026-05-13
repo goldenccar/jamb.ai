@@ -15,6 +15,8 @@ function showPage(pageId) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById('page-' + pageId).classList.add('active');
     window.scrollTo(0, 0);
+    if (pageId === 'meihua') resetMeiHua();
+    if (pageId === 'liuyao') resetLiuYao();
 }
 
 document.querySelectorAll('.method-card').forEach(card => {
@@ -62,14 +64,22 @@ function initMeiHua() {
         document.getElementById('meihua-result').classList.add('active');
     });
 
-    document.getElementById('btn-meihua-reset').addEventListener('click', () => {
-        document.getElementById('meihua-result').classList.remove('active');
-        document.getElementById('meihua-start').classList.add('active');
-        document.getElementById('meihua-question').value = '';
-        document.getElementById('mh-three-1').value = '';
-        document.getElementById('mh-three-2').value = '';
-        document.getElementById('mh-three-3').value = '';
+    document.getElementById('btn-meihua-reset').addEventListener('click', resetMeiHua);
+}
+
+function resetMeiHua() {
+    document.getElementById('meihua-result').classList.remove('active');
+    document.getElementById('meihua-start').classList.add('active');
+    document.getElementById('mh-three-1').value = '';
+    document.getElementById('mh-three-2').value = '';
+    document.getElementById('mh-three-3').value = '';
+    mhCurrentMethod = 'time';
+    document.querySelectorAll('[data-mh-method]').forEach(b => b.classList.remove('active'));
+    document.querySelector('[data-mh-method="time"]')?.classList.add('active');
+    MH_METHODS.forEach(m => {
+        document.getElementById('mh-opt-' + m)?.classList.remove('active');
     });
+    document.getElementById('mh-opt-time')?.classList.add('active');
 }
 
 function renderMeiHuaResult(result) {
@@ -190,17 +200,23 @@ function switchToLiuYaoResult() {
 function resetLiuYao() {
     lyCoinResults = [];
     lyCurrentCoins = [0, 0, 0];
+    lyCurrentMethod = 'coin';
     document.getElementById('liuyao-result').classList.remove('active');
     document.getElementById('liuyao-start').classList.add('active');
-    document.getElementById('liuyao-question').value = '';
     document.getElementById('ly-number-input').value = '';
     document.getElementById('coin-result').textContent = '准备就绪';
     document.querySelectorAll('.yao-slot').forEach(s => s.classList.remove('filled-yang', 'filled-yin'));
     document.querySelectorAll('.coin-item').forEach(c => { c.textContent = ''; });
-    const btn = document.getElementById('btn-shake-coin');
-    btn.textContent = '摇一摇';
-    btn.disabled = false;
+    const shakeBtn = document.getElementById('btn-shake-coin');
+    shakeBtn.textContent = '摇一摇';
+    shakeBtn.disabled = false;
     document.getElementById('btn-liuyao-start').classList.add('hidden');
+    document.querySelectorAll('[data-ly-method]').forEach(b => b.classList.remove('active'));
+    document.querySelector('[data-ly-method="coin"]')?.classList.add('active');
+    ['coin', 'time', 'number'].forEach(m => {
+        document.getElementById('ly-opt-' + m)?.classList.remove('active');
+    });
+    document.getElementById('ly-opt-coin')?.classList.add('active');
 }
 
 function updateCoinDisplay() {
