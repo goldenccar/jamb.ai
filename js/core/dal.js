@@ -28,6 +28,7 @@ class DataAccessLayer {
         this._naJia = null;
         this._wuXing = null;
         this._hexagramMappings = null;
+        this._daBaiHua = null;
         this._ready = false;
     }
 
@@ -42,6 +43,7 @@ class DataAccessLayer {
             this._loadNaJia(),
             this._loadWuXing(),
             this._loadHexagramMappings(),
+            this._loadDaBaiHua(),
         ]);
         this._ready = true;
     }
@@ -83,6 +85,11 @@ class DataAccessLayer {
         this._hexagramMappings = data.mappings;
     }
 
+    async _loadDaBaiHua() {
+        const data = await this._loadJson('hexagrams-dabaihua.json');
+        this._daBaiHua = data.dabaihua;
+    }
+
     // ---------- 六十四卦查询 ----------
 
     getHexagram(nameOrId) {
@@ -118,6 +125,10 @@ class DataAccessLayer {
     getBaiHua(hexagramName) {
         const h = this.getHexagram(hexagramName);
         return h ? h.guaCiBaihua : '';
+    }
+
+    getDaBaiHua(hexagramName) {
+        return this._daBaiHua?.[hexagramName] || '';
     }
 
     getGuaCi(hexagramName) {

@@ -106,6 +106,12 @@ export function getBaiHua(guaName) {
     return BAI_HUA[guaName] || '';
 }
 
+export function getDaBaiHua(guaName) {
+    const dalResult = DAL.getDaBaiHua?.(guaName);
+    if (dalResult) return dalResult;
+    return '';
+}
+
 export function getGuaCiText(guaName) {
     const dalResult = DAL.getGuaCi(guaName);
     if (dalResult) return dalResult;

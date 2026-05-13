@@ -6,7 +6,7 @@
 import { DAL } from './core/dal.js';
 import MeiHuaYiShu from './modules/meihua.js';
 import LiuYao from './modules/liuyao.js';
-import { getYaoHTML, numToChinese } from './core/utils.js';
+import { getYaoHTML, numToChinese, getDaBaiHua } from './core/utils.js';
 
 // ============================================
 // 页面导航
@@ -90,8 +90,13 @@ function renderMeiHuaResult(result) {
     document.getElementById('mh-yong-gua').innerHTML = `${result.yong.symbol} ${result.yong.name}（${result.yong.wuxing}）`;
 
     const mhDuan = MeiHuaYiShu.getDuanYu(result);
+    const mhDaBaihua = getDaBaiHua(result.ben.name);
     document.getElementById('mh-duan-original').innerHTML = `<div class="duan-title">卦辞原文</div><div class="duan-text duan-classic">${mhDuan.ci}</div>`;
-    document.getElementById('mh-duan-baihua').innerHTML = `<div class="duan-title">白话释义 · 体用分析</div><div class="duan-text">${mhDuan.baihua}<br><br>${mhDuan.shengKe}</div>`;
+    document.getElementById('mh-duan-baihua').innerHTML = `
+        <div class="duan-title">白话释义 · 体用分析</div>
+        <div class="duan-text">${mhDuan.baihua}<br><br>${mhDuan.shengKe}</div>
+        ${mhDaBaihua ? `<div class="duan-subtitle">💡 大白话</div><div class="duan-text duan-dabaihua">${mhDaBaihua}</div>` : ''}
+    `;
 }
 
 function renderYaoLines(yao, dongYao = -1) {
@@ -235,9 +240,11 @@ function renderLiuYaoResult(result) {
         <div class="duan-text duan-classic">${lyDuan.ci}</div>
         ${yaoCiHtml ? `<div class="duan-subtitle">动爻爻辞</div>${yaoCiHtml}` : ''}
     `;
+    const lyDaBaihua = getDaBaiHua(result.ben.name);
     document.getElementById('ly-duan-baihua').innerHTML = `
         <div class="duan-title">白话释义 · 卦象分析</div>
         <div class="duan-text">${lyDuan.baihua}<br><br>世爻在${lyDuan.shi}，应爻在${lyDuan.ying}。卦宫${lyDuan.gong}。共${lyDuan.dongCount}个动爻。</div>
+        ${lyDaBaihua ? `<div class="duan-subtitle">💡 大白话</div><div class="duan-text duan-dabaihua">${lyDaBaihua}</div>` : ''}
     `;
 }
 
