@@ -2,8 +2,9 @@
  * 易占 - 数据访问层 (Data Access Layer)
  *
  * 设计目标：
- * 1. 前端模式：从本地 data/*.json 加载静态数据
+ * 1. 前端模式：从本地 data/{module}/*.json 加载静态数据
  * 2. API 模式（预留）：向后端 REST API 请求数据
+ * 3. 模块化：支持多玄学体系数据隔离（中玄 / 西玄 / ...）
  *
  * 多端适配：
  * - Web:    import { DAL } from './core/dal.js'
@@ -15,7 +16,11 @@
 const CONFIG = {
     mode: 'local',      // 'local' | 'api'
     apiBase: '',        // 预留：如 'https://api.yizhan.com/v1'
-    dataPath: 'data/',  // 本地 JSON 路径
+    dataPath: 'data/',  // 本地 JSON 根路径
+    modules: {
+        chinese: 'chinese_data/',   // 中式玄学数据目录
+        western: 'western_data/',   // 西式玄学数据目录（预留）
+    },
 };
 
 class DataAccessLayer {
@@ -37,56 +42,71 @@ class DataAccessLayer {
     async init() {
         if (this._ready) return;
         await Promise.all([
-            this._loadHexagrams(),
-            this._loadTrigrams(),
-            this._loadBaGong(),
-            this._loadNaJia(),
-            this._loadWuXing(),
-            this._loadHexagramMappings(),
-            this._loadDaBaiHua(),
+            this._loadChineseData(),
         ]);
         this._ready = true;
     }
 
-    async _loadJson(filename) {
-        const res = await fetch(CONFIG.dataPath + filename);
+    async _loadJson(filename, module = '') {
+        const modulePath = module ? CONFIG.modules[module] : '';
+        const res = await fetch(CONFIG.dataPath + modulePath + filename);
         return res.json();
     }
 
-    async _loadHexagrams() {
-        const data = await this._loadJson('hexagrams.json');
+    /** 加载中式玄学全部数据表 */
+    async _loadChineseData() {
+        const mod = 'chinese';
+        await Promise.all([
+            this._loadHexagrams(mod),
+            this._loadTrigrams(mod),
+            this._loadBaGong(mod),
+            this._loadNaJia(mod),
+            this._loadWuXing(mod),
+            this._loadHexagramMappings(mod),
+            this._loadDaBaiHua(mod),
+        ]);
+    }
+
+    /** 预留：加载西式玄学数据 */
+    async _loadWesternData() {
+        // const mod = 'western';
+        // TODO: 加载塔罗、占星等数据
+    }
+
+    async _loadHexagrams(module) {
+        const data = await this._loadJson('hexagrams.json', module);
         this._hexagramList = data.hexagrams;
         this._hexagrams = new Map(data.hexagrams.map(h => [h.name, h]));
         this._cache.set('hexagrams_meta', { version: data.version, source: data.source, updated: data.updated });
     }
 
-    async _loadTrigrams() {
-        const data = await this._loadJson('trigrams.json');
+    async _loadTrigrams(module) {
+        const data = await this._loadJson('trigrams.json', module);
         this._trigrams = new Map(data.trigrams.map(t => [t.name, t]));
     }
 
-    async _loadBaGong() {
-        const data = await this._loadJson('ba-gong.json');
+    async _loadBaGong(module) {
+        const data = await this._loadJson('ba-gong.json', module);
         this._baGong = data.baGong;
     }
 
-    async _loadNaJia() {
-        const data = await this._loadJson('na-jia.json');
+    async _loadNaJia(module) {
+        const data = await this._loadJson('na-jia.json', module);
         this._naJia = data.naJia;
     }
 
-    async _loadWuXing() {
-        const data = await this._loadJson('wu-xing.json');
+    async _loadWuXing(module) {
+        const data = await this._loadJson('wu-xing.json', module);
         this._wuXing = data;
     }
 
-    async _loadHexagramMappings() {
-        const data = await this._loadJson('hexagram-mappings.json');
+    async _loadHexagramMappings(module) {
+        const data = await this._loadJson('hexagram-mappings.json', module);
         this._hexagramMappings = data.mappings;
     }
 
-    async _loadDaBaiHua() {
-        const data = await this._loadJson('hexagrams-dabaihua.json');
+    async _loadDaBaiHua(module) {
+        const data = await this._loadJson('hexagrams-dabaihua.json', module);
         this._daBaiHua = data.dabaihua;
     }
 
