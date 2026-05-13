@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>易占</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/chinese_style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- 首页 -->
+        <section id="page-home" class="page active">
+            <div class="home-container">
+                <div class="aura-bg">
+                    <svg class="bagua-spin" viewBox="0 0 200 200" fill="none">
+                        <circle cx="100" cy="100" r="90" stroke="rgba(201,169,110,0.15)" stroke-width="0.5"/>
+                        <circle cx="100" cy="100" r="70" stroke="rgba(201,169,110,0.1)" stroke-width="0.5"/>
+                        <circle cx="100" cy="100" r="50" stroke="rgba(201,169,110,0.08)" stroke-width="0.5"/>
+                        <g opacity="0.25">
+                            <path d="M100 10 A90 90 0 0 1 100 190 A45 45 0 0 0 100 100 A45 45 0 0 1 100 10Z" fill="rgba(201,169,110,0.3)"/>
+                            <circle cx="100" cy="55" r="10" fill="#0C0C0C"/>
+                            <circle cx="100" cy="145" r="10" fill="rgba(201,169,110,0.3)"/>
+                        </g>
+                        <line x1="100" y1="10" x2="100" y2="190" stroke="rgba(201,169,110,0.1)" stroke-width="0.5"/>
+                        <line x1="10" y1="100" x2="190" y2="100" stroke="rgba(201,169,110,0.1)" stroke-width="0.5"/>
+                    </svg>
+                    <div class="particles"></div>
+                </div>
+                <header class="home-header">
+                    <h1 class="site-title">易占</h1>
+                    <p class="site-subtitle">以数起象，观象知机</p>
+                </header>
+                <nav class="method-grid">
+                    <button class="method-card" data-page="meihua">
+                        <span class="card-name">梅花易数</span>
+                        <span class="card-desc">先天数理，心起卦成</span>
+                    </button>
+                    <div class="method-divider"></div>
+                    <button class="method-card" data-page="liuyao">
+                        <span class="card-name">六爻</span>
+                        <span class="card-desc">三钱六次，纳甲推演</span>
+                    </button>
+                </nav>
+                <footer class="home-footer">
+                    <p>仅供文化研究与娱乐参考</p>
+                </footer>
+            </div>
+        </section>
+
+        <!-- 梅花易数 -->
+        <section id="page-meihua" class="page">
+            <div class="page-header">
+                <button class="btn-back" data-back>返回</button>
+                <h2>梅花易数</h2>
+                <div class="header-spacer"></div>
+            </div>
+            <div class="page-content">
+                <div id="meihua-start" class="step-panel active">
+                    <div class="step-title">心诚一念，择法起卦</div>
+                    <div class="method-selector">
+                        <button class="method-btn active" data-mh-method="time">时间起卦</button>
+                        <button class="method-btn" data-mh-method="three">三数起卦</button>
+                        <button class="method-btn" data-mh-method="random">随机起卦</button>
+                    </div>
+                    <div class="method-options">
+                        <div id="mh-opt-time" class="opt-panel active">
+                            <div class="opt-icon">◷</div>
+                            <p>以当下之时起卦，年月日时自化卦象</p>
+                        </div>
+                        <div id="mh-opt-three" class="opt-panel">
+                            <div class="opt-icon">☰</div>
+                            <p>心中默想一事，随意报出三个数字</p>
+                            <div class="three-inputs">
+                                <div class="input-field">
+                                    <label>第一数 · 定上卦</label>
+                                    <input type="text" id="mh-three-1" placeholder="0" inputmode="numeric" autocomplete="off">
+                                </div>
+                                <div class="input-field">
+                                    <label>第二数 · 定下卦</label>
+                                    <input type="text" id="mh-three-2" placeholder="0" inputmode="numeric" autocomplete="off">
+                                </div>
+                                <div class="input-field">
+                                    <label>第三数 · 定动爻</label>
+                                    <input type="text" id="mh-three-3" placeholder="0" inputmode="numeric" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="mh-opt-random" class="opt-panel">
+                            <div class="opt-icon">✦</div>
+                            <p>天机自现，不由人择</p>
+                        </div>
+                    </div>
+                    <button class="btn-primary" id="btn-meihua-start">起卦</button>
+                </div>
+
+                <div id="meihua-result" class="step-panel">
+                    <div class="gua-grid">
+                        <div class="gua-card">
+                            <div class="gua-label">本卦</div>
+                            <div class="gua-name" id="mh-ben-gua-name"></div>
+                            <div class="gua-xiang" id="mh-ben-gua-xiang"></div>
+                            <div class="gua-info" id="mh-ben-gua-info"></div>
+                        </div>
+                        <div class="gua-card">
+                            <div class="gua-label">互卦</div>
+                            <div class="gua-name" id="mh-hu-gua-name"></div>
+                            <div class="gua-xiang" id="mh-hu-gua-xiang"></div>
+                            <div class="gua-info" id="mh-hu-gua-info"></div>
+                        </div>
+                        <div class="gua-card">
+                            <div class="gua-label">变卦</div>
+                            <div class="gua-name" id="mh-bian-gua-name"></div>
+                            <div class="gua-xiang" id="mh-bian-gua-xiang"></div>
+                            <div class="gua-info" id="mh-bian-gua-info"></div>
+                        </div>
+                    </div>
+                    <div class="analysis-section">
+                        <div class="analysis-item">
+                            <span class="analysis-label">动爻</span>
+                            <span class="analysis-value" id="mh-dong-yao"></span>
+                        </div>
+                        <div class="analysis-item">
+                            <span class="analysis-label">体卦</span>
+                            <span class="analysis-value" id="mh-ti-gua"></span>
+                        </div>
+                        <div class="analysis-item">
+                            <span class="analysis-label">用卦</span>
+                            <span class="analysis-value" id="mh-yong-gua"></span>
+                        </div>
+                    </div>
+                    <div class="duan-yu" id="mh-duan-yu">
+                        <div class="duan-original" id="mh-duan-original"></div>
+                        <div class="duan-divider"></div>
+                        <div class="duan-baihua" id="mh-duan-baihua"></div>
+                    </div>
+                    <button class="btn-secondary" id="btn-meihua-reset">再起一卦</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 六爻 -->
+        <section id="page-liuyao" class="page">
+            <div class="page-header">
+                <button class="btn-back" data-back>返回</button>
+                <h2>六爻</h2>
+                <div class="header-spacer"></div>
+            </div>
+            <div class="page-content">
+                <div id="liuyao-start" class="step-panel active">
+                    <div class="step-title">心诚一事，三钱六次</div>
+                    <div class="method-selector">
+                        <button class="method-btn active" data-ly-method="coin">铜钱摇卦</button>
+                        <button class="method-btn" data-ly-method="time">时间起卦</button>
+                        <button class="method-btn" data-ly-method="number">数字起卦</button>
+                    </div>
+                    <div class="method-options">
+                        <div id="ly-opt-coin" class="opt-panel active">
+                            <div class="coin-area">
+                                <div class="coin-hint">默念所问之事，轻触铜钱</div>
+                                <div class="coin-display" id="coin-display">
+                                    <div class="coin-item" id="coin-1"></div>
+                                    <div class="coin-item" id="coin-2"></div>
+                                    <div class="coin-item" id="coin-3"></div>
+                                </div>
+                                <div class="coin-result" id="coin-result">准备就绪</div>
+                                <div class="yao-progress" id="yao-progress">
+                                    <div class="yao-slot"></div>
+                                    <div class="yao-slot"></div>
+                                    <div class="yao-slot"></div>
+                                    <div class="yao-slot"></div>
+                                    <div class="yao-slot"></div>
+                                    <div class="yao-slot"></div>
+                                </div>
+                                <button class="btn-primary" id="btn-shake-coin">摇一摇</button>
+                            </div>
+                        </div>
+                        <div id="ly-opt-time" class="opt-panel">
+                            <div class="opt-icon">◷</div>
+                            <p>以当下之时起卦，年月日时自化卦象</p>
+                            <button class="btn-primary" id="btn-liuyao-time">起卦</button>
+                        </div>
+                        <div id="ly-opt-number" class="opt-panel">
+                            <div class="opt-icon">☰</div>
+                            <label>输入两个数字</label>
+                            <input type="text" id="ly-number-input" placeholder="如：36 85" inputmode="numeric">
+                            <button class="btn-primary" id="btn-liuyao-number">起卦</button>
+                        </div>
+                    </div>
+                    <button class="btn-primary hidden" id="btn-liuyao-start">查看卦象</button>
+                </div>
+
+                <div id="liuyao-result" class="step-panel">
+                    <div class="liuyao-board">
+                        <div class="board-column">
+                            <div class="board-title">本卦</div>
+                            <div class="board-gua-name" id="ly-ben-gua-name"></div>
+                            <div class="yao-list" id="ly-ben-yao-list"></div>
+                        </div>
+                        <div class="board-column">
+                            <div class="board-title">变卦</div>
+                            <div class="board-gua-name" id="ly-bian-gua-name"></div>
+                            <div class="yao-list" id="ly-bian-yao-list"></div>
+                        </div>
+                        <div class="board-column info-column">
+                            <div class="board-title">卦象信息</div>
+                            <div class="ly-info-list" id="ly-info-list"></div>
+                        </div>
+                    </div>
+                    <div class="duan-yu" id="ly-duan-yu">
+                        <div class="duan-original" id="ly-duan-original"></div>
+                        <div class="duan-divider"></div>
+                        <div class="duan-baihua" id="ly-duan-baihua"></div>
+                    </div>
+                    <button class="btn-secondary" id="btn-liuyao-reset">再起一卦</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="js/lunar.min.js"></script>
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>
