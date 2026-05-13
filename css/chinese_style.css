@@ -5,19 +5,19 @@
    ============================================ */
 
 :root {
-    --bg-primary: #0C0C0C;
-    --bg-secondary: rgba(255,255,255,0.03);
-    --bg-card: rgba(255,255,255,0.035);
-    --text-primary: #E8E4DC;
-    --text-secondary: #8A8580;
-    --text-tertiary: #706B65;
-    --accent-gold: #C9A96E;
-    --accent-gold-dim: rgba(201,169,110,0.25);
-    --accent-gold-faint: rgba(201,169,110,0.08);
-    --border-light: rgba(255,255,255,0.06);
-    --border-medium: rgba(255,255,255,0.1);
+    --bg-primary: var(--color-bg-primary);
+    --bg-secondary: var(--color-bg-secondary);
+    --bg-card: var(--color-bg-card);
+    --text-primary: var(--color-text-primary);
+    --text-secondary: var(--color-text-secondary);
+    --text-tertiary: var(--color-text-tertiary);
+    --accent-gold: var(--color-accent-solid);
+    --accent-gold-dim: rgba(151, 131, 101, 0.25);
+    --accent-gold-faint: rgba(151, 131, 101, 0.08);
+    --border-light: rgba(232, 226, 217, 0.06);
+    --border-medium: rgba(232, 226, 217, 0.1);
     --shadow-soft: 0 4px 32px rgba(0,0,0,0.5);
-    --shadow-gold: 0 0 40px rgba(201,169,110,0.08);
+    --shadow-gold: 0 0 40px rgba(151, 131, 101, 0.08);
     --radius-sm: 6px;
     --radius-md: 12px;
     --radius-lg: 20px;
@@ -540,13 +540,13 @@ body {
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    background: radial-gradient(circle at 35% 30%, #8A7A5C, #4A3F2E);
+    background: radial-gradient(circle at 35% 30%, var(--gold-8), var(--gold-5));
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 22px;
     font-weight: 700;
-    color: #1A150F;
+    color: var(--gold-2);
     box-shadow:
         0 4px 12px rgba(0,0,0,0.5),
         inset 0 1px 2px rgba(255,255,255,0.15),

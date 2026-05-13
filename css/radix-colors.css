@@ -1,0 +1,90 @@
+/* Radix UI Colors - Dark Theme */
+/* Source: @radix-ui/colors npm package */
+
+:root {
+  /* Gold Dark - 暖金暗色系列（主色调） */
+  --gold-1: #121211;
+  --gold-2: #1b1a17;
+  --gold-3: #24231f;
+  --gold-4: #2d2b26;
+  --gold-5: #38352e;
+  --gold-6: #444039;
+  --gold-7: #544f46;
+  --gold-8: #696256;
+  --gold-9: #978365;
+  --gold-10: #a39073;
+  --gold-11: #cbb99f;
+  --gold-12: #e8e2d9;
+
+  /* Mauve Dark - 紫灰中性色（辅助背景/文字） */
+  --mauve-1: #121113;
+  --mauve-2: #1a191b;
+  --mauve-3: #232225;
+  --mauve-4: #2b292d;
+  --mauve-5: #323035;
+  --mauve-6: #3c393f;
+  --mauve-7: #49474e;
+  --mauve-8: #625f69;
+  --mauve-9: #6f6d78;
+  --mauve-10: #7c7a85;
+  --mauve-11: #b5b2bc;
+  --mauve-12: #eeeef0;
+
+  /* Amber Dark - 琥珀色（高亮、动爻标记） */
+  --amber-1: #16120c;
+  --amber-2: #1d180f;
+  --amber-3: #302008;
+  --amber-4: #3f2700;
+  --amber-5: #4d3000;
+  --amber-6: #5c3d05;
+  --amber-7: #714f19;
+  --amber-8: #8f6424;
+  --amber-9: #ffc53d;
+  --amber-10: #ffd60a;
+  --amber-11: #ffca16;
+  --amber-12: #ffe7b3;
+
+  /* Bronze Dark - 青铜色（铜钱、古器） */
+  --bronze-1: #141110;
+  --bronze-2: #1c1917;
+  --bronze-3: #262220;
+  --bronze-4: #302a27;
+  --bronze-5: #3b3330;
+  --bronze-6: #493e3a;
+  --bronze-7: #5a4c47;
+  --bronze-8: #6f5f58;
+  --bronze-9: #a18072;
+  --bronze-10: #ae8c7e;
+  --bronze-11: #d4b3a5;
+  --bronze-12: #ede0d9;
+
+  /* 语义化别名 - 水墨国风主题映射 */
+  --color-bg-primary: var(--gold-1);
+  --color-bg-secondary: var(--gold-2);
+  --color-bg-tertiary: var(--gold-3);
+  --color-bg-card: var(--gold-3);
+  --color-bg-hover: var(--gold-4);
+  --color-bg-active: var(--gold-5);
+
+  --color-border-subtle: var(--gold-6);
+  --color-border-default: var(--gold-7);
+  --color-border-hover: var(--gold-8);
+
+  --color-accent-solid: var(--gold-9);
+  --color-accent-hover: var(--gold-10);
+  --color-accent-muted: var(--gold-11);
+  --color-accent-contrast: var(--gold-12);
+
+  --color-text-primary: var(--gold-12);
+  --color-text-secondary: var(--gold-11);
+  --color-text-tertiary: var(--gold-8);
+  --color-text-muted: var(--gold-7);
+
+  --color-highlight: var(--amber-9);
+  --color-highlight-hover: var(--amber-10);
+  --color-highlight-muted: var(--amber-11);
+  --color-highlight-bg: var(--amber-3);
+
+  --color-bronze-solid: var(--bronze-9);
+  --color-bronze-muted: var(--bronze-11);
+}

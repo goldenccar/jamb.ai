@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "description": "先天八卦数据表",
+  "trigrams": [
+    {"id":1,"name":"乾","symbol":"☰","wuxing":"金","number":1,"nature":"天","yao":[1,1,1]},
+    {"id":2,"name":"兑","symbol":"☱","wuxing":"金","number":2,"nature":"泽","yao":[1,1,0]},
+    {"id":3,"name":"离","symbol":"☲","wuxing":"火","number":3,"nature":"火","yao":[1,0,1]},
+    {"id":4,"name":"震","symbol":"☳","wuxing":"木","number":4,"nature":"雷","yao":[1,0,0]},
+    {"id":5,"name":"巽","symbol":"☴","wuxing":"木","number":5,"nature":"风","yao":[0,1,1]},
+    {"id":6,"name":"坎","symbol":"☵","wuxing":"水","number":6,"nature":"水","yao":[0,1,0]},
+    {"id":7,"name":"艮","symbol":"☶","wuxing":"土","number":7,"nature":"山","yao":[0,0,1]},
+    {"id":8,"name":"坤","symbol":"☷","wuxing":"土","number":8,"nature":"地","yao":[0,0,0]}
+  ]
+}

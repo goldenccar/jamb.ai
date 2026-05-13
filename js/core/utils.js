@@ -8,6 +8,8 @@
 
 import { DAL } from './dal.js';
 import { YAO_CI, BAI_HUA } from './yijing-text.js';
+import { yaoToTrigramId } from './trigrams.js';
+import { checkBodyUseRelation } from './wu-xing.js';
 
 // ============================================
 // 农历转换（基于 lunar-javascript）
@@ -73,13 +75,7 @@ function fallbackLunar(date) {
 // 五行生克判定
 // ============================================
 export function checkShengKe(tiWx, yongWx) {
-    const map = DAL.getWuXingShengKe(tiWx);
-    if (!map) return 'bihe';
-    if (map.woSheng === yongWx) return 'sheng';
-    if (map.woKe === yongWx) return 'ke';
-    if (map.shengWo === yongWx) return 'beisheng';
-    if (map.keWo === yongWx) return 'beike';
-    return 'bihe';
+    return checkBodyUseRelation(tiWx, yongWx).type;
 }
 
 export function shengKeText(type) {
@@ -132,13 +128,7 @@ export function getYaoHTML(yao, isDong = false) {
 // 三爻转八卦序号
 // ============================================
 export function yaoToKey(yao) {
-    const bagua = DAL.getAllBagua();
-    for (const g of bagua) {
-        if (g.yao[0] === yao[0] && g.yao[1] === yao[1] && g.yao[2] === yao[2]) {
-            return g.id;
-        }
-    }
-    return 8;
+    return yaoToTrigramId(yao);
 }
 
 // ============================================

@@ -1,10 +1,10 @@
 /**
  * 易占 - 数据访问层 (Data Access Layer)
- * 
+ *
  * 设计目标：
  * 1. 前端模式：从本地 data/*.json 加载静态数据
  * 2. API 模式（预留）：向后端 REST API 请求数据
- * 
+ *
  * 多端适配：
  * - Web:    import { DAL } from './core/dal.js'
  * - 小程序: 复用 DAL 类，更换 apiBase 即可
@@ -21,10 +21,13 @@ const CONFIG = {
 class DataAccessLayer {
     constructor() {
         this._cache = new Map();
-        this._hexagrams = null;        // { name -> hexagram }
-        this._hexagramList = null;     // [hexagram, ...]
-        this._bagua = null;
-        this._rules = null;
+        this._hexagrams = null;
+        this._hexagramList = null;
+        this._trigrams = null;
+        this._baGong = null;
+        this._naJia = null;
+        this._wuXing = null;
+        this._hexagramMappings = null;
         this._ready = false;
     }
 
@@ -34,33 +37,50 @@ class DataAccessLayer {
         if (this._ready) return;
         await Promise.all([
             this._loadHexagrams(),
-            this._loadBagua(),
-            this._loadRules(),
+            this._loadTrigrams(),
+            this._loadBaGong(),
+            this._loadNaJia(),
+            this._loadWuXing(),
+            this._loadHexagramMappings(),
         ]);
         this._ready = true;
     }
 
+    async _loadJson(filename) {
+        const res = await fetch(CONFIG.dataPath + filename);
+        return res.json();
+    }
+
     async _loadHexagrams() {
-        if (CONFIG.mode === 'api') {
-            // 预留：await this._apiGet('/hexagrams');
-            throw new Error('API mode not implemented yet');
-        }
-        const res = await fetch(CONFIG.dataPath + 'hexagrams.json');
-        const data = await res.json();
+        const data = await this._loadJson('hexagrams.json');
         this._hexagramList = data.hexagrams;
         this._hexagrams = new Map(data.hexagrams.map(h => [h.name, h]));
         this._cache.set('hexagrams_meta', { version: data.version, source: data.source, updated: data.updated });
     }
 
-    async _loadBagua() {
-        const res = await fetch(CONFIG.dataPath + 'bagua.json');
-        const data = await res.json();
-        this._bagua = new Map(data.bagua.map(b => [b.id, b]));
+    async _loadTrigrams() {
+        const data = await this._loadJson('trigrams.json');
+        this._trigrams = new Map(data.trigrams.map(t => [t.name, t]));
     }
 
-    async _loadRules() {
-        const res = await fetch(CONFIG.dataPath + 'divination-rules.json');
-        this._rules = await res.json();
+    async _loadBaGong() {
+        const data = await this._loadJson('ba-gong.json');
+        this._baGong = data.baGong;
+    }
+
+    async _loadNaJia() {
+        const data = await this._loadJson('na-jia.json');
+        this._naJia = data.naJia;
+    }
+
+    async _loadWuXing() {
+        const data = await this._loadJson('wu-xing.json');
+        this._wuXing = data;
+    }
+
+    async _loadHexagramMappings() {
+        const data = await this._loadJson('hexagram-mappings.json');
+        this._hexagramMappings = data.mappings;
     }
 
     // ---------- 六十四卦查询 ----------
@@ -80,12 +100,14 @@ class DataAccessLayer {
         return this._cache.get('hexagrams_meta') || {};
     }
 
-    // 通过上下卦查找
     getHexagramByTrigrams(upper, lower) {
         return this._hexagramList?.find(h => h.upperTrigram === upper && h.lowerTrigram === lower) || null;
     }
 
-    // 爻辞查询（position: 1-6）
+    getHexagramMapping(upperId, lowerId) {
+        return this._hexagramMappings?.[`${upperId}_${lowerId}`] || null;
+    }
+
     getYaoCi(hexagramName, position) {
         const h = this.getHexagram(hexagramName);
         if (!h) return '';
@@ -93,13 +115,11 @@ class DataAccessLayer {
         return yao ? yao.original : '';
     }
 
-    // 白话查询
     getBaiHua(hexagramName) {
         const h = this.getHexagram(hexagramName);
         return h ? h.guaCiBaihua : '';
     }
 
-    // 卦辞查询
     getGuaCi(hexagramName) {
         const h = this.getHexagram(hexagramName);
         return h ? h.guaCi : '';
@@ -107,34 +127,42 @@ class DataAccessLayer {
 
     // ---------- 八卦查询 ----------
 
-    getBagua(id) {
-        return this._bagua?.get(id) || null;
+    getTrigram(nameOrId) {
+        if (typeof nameOrId === 'number') {
+            const list = Array.from(this._trigrams?.values() || []);
+            return list.find(t => t.id === nameOrId) || null;
+        }
+        return this._trigrams?.get(nameOrId) || null;
     }
 
-    getAllBagua() {
-        return Array.from(this._bagua?.values() || []);
+    getAllTrigrams() {
+        return Array.from(this._trigrams?.values() || []);
     }
 
-    // ---------- 占卜规则 ----------
+    // ---------- 八宫 ----------
 
     getBaGong(guaName) {
-        return this._rules?.baGong[guaName] || { gong: '', wuxing: '', shi: 1, ying: 4 };
+        return this._baGong?.[guaName] || { gong: '', wuxing: '', shi: 1, ying: 4 };
     }
+
+    // ---------- 纳甲 ----------
 
     getNaJia(trigramName) {
-        return this._rules?.naJia[trigramName] || null;
+        return this._naJia?.[trigramName] || null;
     }
 
+    // ---------- 五行 ----------
+
     getWuXingShengKe(element) {
-        return this._rules?.wuxing.shengKe[element] || null;
+        return this._wuXing?.shengKe[element] || null;
     }
 
     getZhiWuXing(zhi) {
-        return this._rules?.wuxing.zhi[zhi] || '';
+        return this._wuXing?.zhi[zhi] || '';
     }
 
     getGanWuXing(gan) {
-        return this._rules?.wuxing.gan[gan] || '';
+        return this._wuXing?.gan[gan] || '';
     }
 
     getLiuQin(gongWuxing, zhiWuxing) {
@@ -148,5 +176,4 @@ class DataAccessLayer {
     }
 }
 
-// 单例导出
 export const DAL = new DataAccessLayer();
