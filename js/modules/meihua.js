@@ -44,9 +44,14 @@ export default class MeiHuaYiShu {
     }
 
     static qiGuaRandom() {
-        const upper = Math.floor(Math.random() * 8) + 1;
-        const lower = Math.floor(Math.random() * 8) + 1;
-        const dongYao = Math.floor(Math.random() * 6) + 1;
+        // 混合时间熵 + Math.random，避免短时间内重复
+        const now = Date.now();
+        const tick = now % 10000;
+        const r1 = Math.floor(Math.random() * 10000);
+        const r2 = Math.floor(Math.random() * 9973);
+        const upper = ((tick + r1) % 8) || 8;
+        const lower = ((tick + r2) % 8) || 8;
+        const dongYao = ((r1 + r2) % 6) || 6;
         return this.buildGua(upper, lower, dongYao);
     }
 

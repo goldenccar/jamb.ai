@@ -19,6 +19,14 @@ function showPage(pageId) {
     if (pageId === 'liuyao') resetLiuYao();
 }
 
+/** 生成更高质量的随机数（混合时间戳 + Math.random） */
+function secureRandom(max) {
+    const timeEntropy = Date.now() % 10000;
+    const mathEntropy = Math.floor(Math.random() * 10000);
+    const mixed = (timeEntropy + mathEntropy + Math.floor(Math.random() * 9973)) % max;
+    return mixed === 0 ? max : mixed;
+}
+
 document.querySelectorAll('.method-card').forEach(card => {
     card.addEventListener('click', () => showPage(card.dataset.page));
 });
@@ -46,7 +54,10 @@ function initMeiHua() {
         });
     });
 
+    let mhDivinating = false;
     document.getElementById('btn-meihua-start').addEventListener('click', () => {
+        if (mhDivinating) return;
+        mhDivinating = true;
         let result;
         if (mhCurrentMethod === 'time') {
             result = MeiHuaYiShu.qiGuaByTime();
@@ -54,7 +65,7 @@ function initMeiHua() {
             const n1 = parseInt(document.getElementById('mh-three-1').value.trim());
             const n2 = parseInt(document.getElementById('mh-three-2').value.trim());
             const n3 = parseInt(document.getElementById('mh-three-3').value.trim());
-            if ([n1, n2, n3].some(n => isNaN(n))) { alert('请输入三个有效数字'); return; }
+            if ([n1, n2, n3].some(n => isNaN(n))) { alert('请输入三个有效数字'); mhDivinating = false; return; }
             result = MeiHuaYiShu.qiGuaByThreeNumbers(n1, n2, n3);
         } else {
             result = MeiHuaYiShu.qiGuaRandom();
@@ -62,6 +73,7 @@ function initMeiHua() {
         renderMeiHuaResult(result);
         document.getElementById('meihua-start').classList.remove('active');
         document.getElementById('meihua-result').classList.add('active');
+        setTimeout(() => { mhDivinating = false; }, 800);
     });
 
     document.getElementById('btn-meihua-reset').addEventListener('click', resetMeiHua);
@@ -73,6 +85,19 @@ function resetMeiHua() {
     document.getElementById('mh-three-1').value = '';
     document.getElementById('mh-three-2').value = '';
     document.getElementById('mh-three-3').value = '';
+    // 彻底清空结果面板，防止任何旧内容残留
+    document.getElementById('mh-ben-gua-name').textContent = '';
+    document.getElementById('mh-ben-gua-xiang').innerHTML = '';
+    document.getElementById('mh-ben-gua-info').textContent = '';
+    document.getElementById('mh-hu-gua-name').textContent = '';
+    document.getElementById('mh-hu-gua-xiang').innerHTML = '';
+    document.getElementById('mh-bian-gua-name').textContent = '';
+    document.getElementById('mh-bian-gua-xiang').innerHTML = '';
+    document.getElementById('mh-dong-yao').textContent = '';
+    document.getElementById('mh-ti-gua').innerHTML = '';
+    document.getElementById('mh-yong-gua').innerHTML = '';
+    document.getElementById('mh-duan-original').innerHTML = '';
+    document.getElementById('mh-duan-baihua').innerHTML = '';
     mhCurrentMethod = 'time';
     document.querySelectorAll('[data-mh-method]').forEach(b => b.classList.remove('active'));
     document.querySelector('[data-mh-method="time"]')?.classList.add('active');
